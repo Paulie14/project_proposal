@@ -1,0 +1,150 @@
+
+%% Select document class - DO NOT CHANGE
+\documentclass{sna}
+
+%% Select any of standard LaTeX2e packages, e.g.
+%  \usepackage{czech}
+%  \usepackage{epsf}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{esint}
+%  \usepackage{amsfonts}
+\usepackage{hyperref}
+%\usepackage{subcaption}
+\usepackage{subfig}
+\usepackage{enumitem}
+
+\def\vc#1{\mathbf{\boldsymbol{#1}}}     % vector
+\def\abs#1{\left|#1\right|}
+\def\norm#1{\| #1 \|}
+\def\d{\mathrm{d}}
+
+\newcommand{\bx}{\vc{x}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\prob}[1]{Problem~{#1}}
+\newcommand{\fig}[1]{\hyperref[#1]{Figure \ref{#1}}}
+
+\begin{document}
+
+%% Specify the paper: title, author(s), home institution and city
+\info{Extended finite elements for mixed-hybrid model of Darcy flow}
+     {P. Exner}
+     {Project proposal}
+
+
+\section{Abstract}
+
+\section{Introduction}
+Mathematical modelling plays a very important role in science and also our daily lives throughout many different
+fields of knowledge. Using modern finite element methods, we are able to simulate, investigate and predict
+various phenomena of both nature and industrial character. Recent advances in the field of finite element methods
+enable us to solve models of various scales, dimensions, to overcome numerical problems and also 
+to couple interfering features together.
+
+A large set of problems with finite element models, that people nowadays deal with, is connected with 
+insufficient accuracy in cases where the model includes large and very small scale phenomena at the same time.
+We can imagine a simulation of groundwater flow in a large domain (hundreds of metres) which can be significantly
+influenced by thin fractures in the porous media or artificial wells and boreholes (several centimetres in diameter).
+These disturbances bring discontinuities and singularities into the model and the finite elements are
+unable to capture them accurately enough.
+
+Adaptive meshes can be used in such cases, but it can cost a lot of computational power to build a very fine mesh,
+and it also require very robust meshing techniques when complex geometries are in question.
+
+Alternatively, multidimensional models are being developed. These decompose the geometry
+in objects of different dimension (e.g. 2D fractures, 1D wells, 0D point sources), create meshes of the objects independently,
+and then they must deal with coupling of the modelled processes among the dimensions. 
+
+Next, there are the so called extended finite element methods (XFEM); or partition of unity methods (PUM) or generalized
+finite element methods (GFEM), which names are sometimes used interchangeably. 
+These enable us to take advantage of a~priori knowledge of the model solution character.
+Then, we are able to incorporate non-polynomial functions, like jumps, into the finite element solution.
+\newline{}
+
+The proposed research is aimed at further development of the XFEM and its usage in multidimensional models. 
+We intend to create a model with incompatible mesh, where elements of different dimensions intersect
+arbitrarily, and then use the XFEM to glue the processes in different dimensions back together. This of course is a very ambitious
+idea, therefore we narrow our plan to 1D-3D coupling. 
+The proposed research is intended to be realized during a doctoral trainee-ship. 
+
+Our research domain is groundwater modelling, therefore we apply the method on such model.
+There are, of course, various other applications for such models apart from groundwater flow and transport in fractured porous media:
+geothermal problematic and gathering geothermal energy; oil and gas extraction and also gas storage;
+construction of safe underground nuclear waste deposits; investigation of transport of substances in human body
+and more.
+
+
+% Brezzi, Fortin - mixed hybrid method
+% Jaffre - multidimensional models for flow
+
+
+% Therefore, I kindly ask for funding of such traineeship to help me covering the expenses on accomodation, food
+% and transportation in M{\" u}nich.
+
+% mention definitely connection with Flow123d, importance for Barbara's team
+
+\section{Personal interest}
+This traineeship is a very important part of my Ph.D. study and my academic career in general.
+The research plan is composed in the way that it continuously follows my previous work which was
+aimed at the study and usage of the extended finite element methods in 2D problems with point singularities.
+I will refer to my current results in Section \ref{sec:background}.
+To my best knowledge, there is nobody in the Czech republic who is intensively studying and developing extended finite element
+methods in multi-dimensional problems at the moment. The results of the trainee-ship will make a significant part 
+of my doctoral thesis.
+
+Further, I take part in a academic research project at my home university, that is focused on a development
+of groundwater flow and transport simulator Flow123d. The speciality of the software is usage of mixed hybrid method
+for modelling groundwater flow on multi-dimensional meshes. I would like to transfer some of my experience
+into this software which would support my thesis in its application part.
+
+\section{Project Summary}
+The traineeship will take place at the Technical University of M{\" u}nich, under the supervision of professor
+Barbara Wolmuth. The proposed length of the trainee-ship is 6 months. The leading topic of the research is 
+\textbf{extended finite elements for mixed-hybrid model of Darcy flow}. It is aimed at modelling of groundwater 
+flow in fractured porous media on multi-dimensional meshes using the extended finite element methods. 
+We can summarize the research plan into several items:
+\begin{itemize}
+  \item Research of current works concerning combination of XFEM and Mixed-hybrid method, in particular for Laplace equation. 
+  \item Propose suitable enrichments for the pressure and the velocity that are stable (satisfy inf-sup condition). 
+        Emphasise good approximation of the velocity field which is necessary for the transport equation. 
+        Possible enrichments are: wells (point source in 2D, line in 3D), fractures (discontinuity in velocity), 
+        boundary of 1D and 2D  fractures. To narrow the plan we will concentrate on enrichment for 3D-1D interaction.
+    %   The aim is to have working enrichment for 3D-1D interaction and some intuition about other useful enrichments that we want implement in future.
+  \item Implement the enrichment for 1D-3D (wells in 3D domain) in Flow123d.
+\end{itemize}
+
+% place, length, title, topic, aim, results
+
+
+\section{Detailed project descrition}
+\subsection{Background} \label{sec:background}
+
+\cite{exner_2015}
+\cite{gracie_modelling_2010}
+\cite{craig_using_2011}
+\cite{fries_corrected_2008}
+\cite{babuska_stable_2012}
+\cite{gupta_stable_2013}
+\cite{bangerth_deal.ii_2007}
+\cite{fries_xfem_overview_2010}
+
+So far, we have developed a model for quasi-3D aquifers-wells problem according to Gracie and Craig~\cite{gracie_modelling_2010,craig_using_2011}.
+The main idea was usage of the XFEM for dealing with the singularity at the wells (0D-2D coupling).
+We have implemented different finite element methods: standard FEM with adaptive refinement, 
+standard XFEM and corrected XFEM~\cite{fries_corrected_2008,fries_xfem_overview_2010},
+stable generalized finite element methods (SGFEM) \cite{babuska_stable_2012, gupta_stable_2013}.
+We have measured their convergence, investigated their properties and compared them. 
+We also improved adaptive integration for enriched elements which resulted in optimal convergence rates of
+all the extended finite element methods. These results where summarized in the article~\cite{exner_2015} (revised and accepted).
+
+
+
+
+current state of art (PUM, pum in mechanics, Zuzino - 1d-3d, mixed hybrid method)
+what we have done (0d-2d model, comparison of pum, adaptive integration, Flow123d - intersections 1d-3d 2d-3d)
+
+
+\bibliographystyle{abbrv}
+\bibliography{citace}
+    
+\end{document}
