@@ -33,8 +33,13 @@
 
 %% Specify the paper: title, author(s), home institution and city
 \info{Extended finite elements for mixed-hybrid model of Darcy flow}
-     {P. Exner}
      {Project proposal}
+     {}
+
+Ing. Pavel Exner (supervisor Mgr. Jan B{\v r}ezina, Ph.D.)\\
+\emph{Technical University of Liberec, \\
+Faculty of Mechatronics, Informatics and Interdisciplinary Studies, \\
+Institute of New Technologies and Applied Informatics}
 
 
 \section{Abstract}
@@ -60,22 +65,26 @@ These disturbances bring discontinuities and singularities into the model and th
 unable to capture them accurately enough.
 
 Adaptive meshes can be used in such cases, but it can cost a lot of computational power to build a very fine mesh,
-and it also require very robust meshing techniques when complex geometries are in question.
+and solve the problem with enormously increasing number of degrees of freedom.
+It also require very robust meshing techniques when complex geometries are in question.
 
 Alternatively, multidimensional models are being developed. These decompose the geometry
 in objects of different dimension (e.g. 2D fractures, 1D wells, 0D point sources), create meshes of the objects independently,
 and then they must deal with coupling of the modelled processes among the dimensions. 
+Compatible meshes, where the intersections are at nodes and sides of elements, are easier to treat, but harder
+or nearly impossible to construct in general case. On the other hand, incompatible meshes with arbitrary intersections are easier to construct, 
+but bring whole new set of problems in the coupling.
 
 Next, there are the so called extended finite element methods (XFEM); or partition of unity methods (PUM) or generalized
 finite element methods (GFEM), which names are sometimes used interchangeably. 
 These enable us to take advantage of a~priori knowledge of the model solution character.
-Then, we are able to incorporate non-polynomial functions, like jumps, into the finite element solution.
+Then, we are able to incorporate non-polynomial functions, like jump or singularity, into the finite element solution.
 \newline{}
 
 The proposed research is aimed at further development of the XFEM and its usage in multidimensional models. 
 We intend to create a model with incompatible mesh, where elements of different dimensions intersect
-arbitrarily, and then use the XFEM to glue the processes in different dimensions back together. This of course is a very ambitious
-idea, therefore we narrow our plan to 1D-3D coupling. 
+arbitrarily, and then use the XFEM to glue the processes in different dimensions back together. 
+This of course is a very ambitious idea, therefore we narrow our plan to 1D-3D coupling. 
 The proposed research is intended to be realized during a doctoral trainee-ship. 
 
 Our research domain is groundwater modelling, therefore we apply the method on such model.
@@ -103,12 +112,12 @@ The results of the trainee-ship will make a significant part of my doctoral thes
 
 To my best knowledge, there is nobody in the Czech republic who is intensively studying and developing extended finite element
 methods in multi-dimensional problems at the moment. On the other hand, it is a hot topic worldwide and there
-are many opened questions to be answered yet. I ensured myself about that during the conference X-DMS\footnote{X-DMS stands for eXtended 
+are many opened questions to be answered yet. Last time, I ensured myself about that during the conference X-DMS\footnote{X-DMS stands for eXtended 
 Discretisation MethodS, Ferrara, 9.-11. September 2015, see \url{http://x-dms2015.sciencesconf.org/})}, where
 quite a small umount of works connecting XFEM and multidimensional model of flow was presented. 
-I will again write down most important references in Section \ref{sec:background}.
+I will refer to some of them in Section \ref{sec:background}.
 
-Further, I take part in a academic research project at my home university, that is focused on a development
+Further, I take part in an academic research project at my home university, that is focused on a development
 of groundwater flow and transport simulator Flow123d\footnote{Flow123d web page: \url{http://flow123d.github.io/}}. 
 The speciality of the software is usage of mixed hybrid method
 for modelling groundwater flow on multi-dimensional meshes. I would like to transfer some of my experience
@@ -123,9 +132,9 @@ We can summarize the research plan into several items:
 \begin{itemize}
   \item Research of current works concerning combination of XFEM and Mixed-hybrid method, in particular for Laplace equation. 
   \item Propose suitable enrichments for the pressure and the velocity that are stable (satisfy inf-sup condition). 
-        Emphasise good approximation of the velocity field which is necessary for the transport equation. 
-        Possible enrichments are: wells (point source in 2D, line in 3D), fractures (discontinuity in velocity), 
-        boundary of 1D and 2D  fractures. To narrow the plan we will concentrate on enrichment for 3D-1D interaction.
+        If possible, emphasise good approximation of the velocity field which is necessary for the transport equation. 
+        Enrichments to be considered: wells (point source in 2D, line in 3D), fractures (discontinuity in velocity), 
+        boundary of 1D and 2D  fractures. To narrow the plan, we will concentrate on enrichment for 3D-1D interaction.
     %   The aim is to have working enrichment for 3D-1D interaction and some intuition about other useful enrichments that we want implement in future.
   \item Implement the enrichment for 1D-3D (wells in 3D domain) in Flow123d.
 \end{itemize}
@@ -133,13 +142,25 @@ We can summarize the research plan into several items:
 % place, length, title, topic, aim, results
 
 
-\section{Detailed project descrition}
+\section{Detailed project description}
 \subsection{Background} \label{sec:background}
 
+In general, we are interested in the model of groundwater flow (Darcy flow considered) in fractured porous media with combined mesh dimensions.
+This model can be discretized using the mixed-hybrid finite element method, which is described in
+well known book by Brezzi and Fortin~\cite{brezzi_mixed_1991}. 
+The actual application of the mixed-hybrid method in this model is studied in several articles.
+In \cite{brezina_mixed-hybrid_2010}, the weak formulation and its discretization using Raviart-Thomas finite 
+elements is written. The linear system is then reduced using the Schur complement (original idea in~\cite{maryska_mixed-hybrid_1995})
+and solved with preconditioned conjugate gradients method.
+In \cite{brezina_2012} a mortar-like method is used to deal with discrete coupling between equations on incompatible 1D-2D meshes 
+of different dimensions. The drawback of this approach is that it uses continuous approximation of velocity, so
+it cannot approximate the discontinuity of the velocity near the fractures accurately enough.
+In \cite{sistek_bddc_2015}, the theoretic part includes the weak and the discrete formulation and also shows
+the uniqueness of the discrete solution. Further, the authors discuss application and results of BDDC 
+(Balancing Domain Decomposition by Constraints) method used for solution of the linear system.
 
 
-
-Regarding my research, I~have been working on the following since I~started my Ph.D. study. 
+Regarding my own research, I~have been working on the following since I~started my Ph.D. study. 
 I~have developed a~model for quasi-3D aquifers-wells problem according to Gracie and Craig~\cite{gracie_modelling_2010,craig_using_2011}.
 The main idea was usage of the XFEM for dealing with the singularity in pressure at the wells (0D-2D coupling).
 I~have implemented different finite element methods: standard FEM with adaptive refinement, 
@@ -154,42 +175,68 @@ the finite element library not supporting any enrichment techniques at the momen
 The results are summarized in the article~\cite{exner_2015}, which is being published at the moment.
 
 
-In general, we are interested in the model of groundwater flow in fractured porous media with combined mesh dimensions.
-This model can be discretized using the mixed-hybrid finite element method, which is described in
-well known book by Brezzi and Fortin~\cite{brezzi_mixed_1991}. 
-The actual application of the mixed-hybrid method in this model is studied in several articles.
-In \cite{brezina_mixed-hybrid_2010}, the weak formulation and its discretization using Raviart-Thomas finite 
-elements is written. The linear system is then reduced using the Schur complement~\cite{maryska_mixed-hybrid_1995}
-and solved.
-In \cite{brezina_2012} a mortar-like method is used to deal with discrete coupling between equations on incompatible 1D-2D meshes 
-of different dimensions. The drawback of this approach is that it uses continuous approximation of velocity, so
-it cannot approximate the discontinuity of the velocity near the fractures accurately enough.
-In \cite{sistek_bddc_2015}, the theoretic part includes the weak and the discrete formulation and also shows
-the uniqueness of the discrete solution. Further, the authors discuss application and results of BDDC 
-(Balancing Domain Decomposition by Constraints) method used for solution of the linear system.
-
 Many researchers are using some kind of extended finite element method. The applications are mainly aimed
 at problems in mechanics, much less people are working with XFEM in field of flow modelling. One of the reasons is
 that the stability of the discrete mixed form is more sensitive on the choice of the finite elements used 
-in flow problems.
+in flow problems. 
+
+Apart from the references on various XFEM in previous paragraph, we can name some works regarding flow and XFEM.
+Extensive work has been done in the area of modelling 1D-2D fractured domains with mixed finite elements
+\cite{fumagalli_numerical_2012, dangelo_mixed_2012, fumagalli_efficient_2014}. There, the XFEM is used to incorporate
+additional degrees of freedom of zero order Raviart-Thomas basis functions on the intersected elements to allow the discontinuity
+in velocity. Similar work is \cite{schwenck_xfem-based_2015}, where the primary formulation is used and
+among others, the fracture tip and fractures intersection is dealt with.
+
+% Further, there are several publications on multi-phase fluid flow governed by Navier-Stokes equation using XFEM for
+% approximation on the interfaces in 2D (\cite{diez_stable_2013,sauerland_stable_2013}).
+
+% TUM - experience in underground water flow modelling, multi-dimensional models...
+% 
+% (PUM, pum in mechanics, Zuzino - 1d-3d, mixed hybrid method)
+% what we have done (0d-2d model, comparison of pum, adaptive integration, Flow123d - intersections 1d-3d 2d-3d)
+
+\subsection{Plan}
+
+Investigate what kind of enrichment in XFEM could be suitable for the mixed-hybrid model. Resolving a singularity
+in 1D-3D connection is intended, using a logarithmic function as in 0D-2D in~\cite{exner_2015}.
+The question is whether we are able to find such enrichment that would not spoil the satisfaction of 
+the discrete inf-sup condition. 
 
 
 
-TUM - experience in underground water flow modelling, multi-dimensional models...
 
-(PUM, pum in mechanics, Zuzino - 1d-3d, mixed hybrid method)
-what we have done (0d-2d model, comparison of pum, adaptive integration, Flow123d - intersections 1d-3d 2d-3d)
+\paragraph{Implementation (Flow123d).}
+There is a lot work in the implementation phase, but some of the following will be prepared before the start
+of the actual trainee-ship.
 
-We want to investigate what kind of enrichment in XFEM is suitable for the mixed-hybrid model. The question
-is whether we are able to find such enrichment that would not harm the satisfaction of the discrete inf-sup
-condition.
+A support for the enrichment in the finite element classes must be implemented. A class that handles the 
+degrees of freedom must be then updated to include the enriched degrees of freedom. 
+Then the assembly of the enriched terms into the linear system must be added.
+
+Since the enrichment function would not be polynomial, accurate integration on the enriched elements needs to
+be implemented. The element adaptive sub-refinement approach can be used to obtain quadrature points, 
+or quadrature points defined in cylindrical coordinate system in the vicinity of 1D elements intersections
+might be suitable in this case.
+
+The enriched elements are in 3D domain. A module in Flow123d that is able to lookup the intersections
+of 1D and 3D elements is now being developed. The enrichment will propagate from the intersected 3D elements.
+The choice of the size of the enrichment area is not straightforward. In case of discontinuities, one layer of elements
+near the discontinuity would be suitable, but in case of singularity, the area must be large enough so that 
+the large gradients in the quantities are well approximated. For simplicity, the area size can be given as
+a constant parameter.
 
 
+
+\paragraph{Results.}
+I want to gain new experince with mixed-hybrid method for discretization, 
+enrichment construction in extended finite element method and application in a multidimensional problem setting.
+The application results of the trainee-ship will be mainly focused in the experimental software implementation.
+All the results and acquired knowledge will contribute to my doctoral thesis.
 
 \section{Research schedule}
 \begin{center}
 
-  \begin{tabular}{R{3cm}|L{12cm}}
+  \begin{tabular}{R{3.3cm}|L{11cm}}
     \hline
     length(days) / date & activity \\ \hline \hline
     20.6.2016 & arrival \\ \hline
@@ -200,6 +247,8 @@ condition.
     30 & (implementation) prepare FE interface and its support for enrichment   \\
     30 & (implementation) prepare DoFHandler for enriched degrees of freedom    \\  
     30 & (implementation) define algebraic system with enriched DoFs  \\
+    30 & (implementation) prepare integration of enriched functions  \\
+    30 & (implementation) assembly enriched terms  \\
     20.12.2016 & departure \\ \hline
   \end{tabular}
 \end{center}
